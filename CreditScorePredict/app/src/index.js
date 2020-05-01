@@ -48,6 +48,13 @@ const App = {
   },
 
   predictScore: async function () {
+    const form = document.forms[0];
+    
+    const props = {};
+    props[form.Postal_Code_.name] = form.Postal_Code_.value;
+    const json = JSON.stringify(props);
+    console.log(json);
+    
     const { fetchCreditScoreViaProvable } = this.meta.methods;
     const ETH_AMOUNT = 1e16;
     const GAS_LIMIT = 3e6
@@ -69,7 +76,7 @@ const App = {
       data: {
         labels: [],
         datasets: [{
-          data: [100,750],
+          data: [850-balance,balance],
           backgroundColor: [  "#FFFFFF","#F7464A"],
           hoverBackgroundColor: ["#A8B3C5","#FF5A5E"]
         }]

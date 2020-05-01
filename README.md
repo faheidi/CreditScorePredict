@@ -15,11 +15,10 @@ npm run bridge
 
 7. under truffle develop run:
  truffle compile
-
  truffle migrate
 
-7. in a new command line in project directory and in app folder run:
+8. in a new command line in project directory and in app folder run:
 npm run dev
 
-8. in a browser which metamask is installed browse: 
+9. in a browser which metamask is installed browse: 
 http://localhost:8080/
