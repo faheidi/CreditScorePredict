@@ -1,4 +1,4 @@
-1. install node.js
+1. install node.js (version 10.20.1)
 
 2. truffle install:
 npm install -g truffle
