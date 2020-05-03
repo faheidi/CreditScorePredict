@@ -1,11 +1,11 @@
 import Web3 from "web3";
 import Chart from 'chart.js';
-import metaCoinArtifact from "../../build/contracts/CreditScorePredict.json";
+import creditScoreArtifact from "../../build/contracts/CreditScorePredict.json";
 
 const App = {
   web3: null,
   account: null,
-  meta: null,
+  CS: null,
 
   start: async function () {
     const { web3 } = this;
@@ -13,15 +13,17 @@ const App = {
     try {
       // get contract instance
       const networkId = await web3.eth.net.getId();
-      const deployedNetwork = metaCoinArtifact.networks[networkId];
-      this.meta = new web3.eth.Contract(
-        metaCoinArtifact.abi,
+      const deployedNetwork = creditScoreArtifact.networks[networkId];
+      this.CS = new web3.eth.Contract(
+        creditScoreArtifact.abi,
         deployedNetwork.address,
       );
 
       // get accounts
       const accounts = await web3.eth.getAccounts();
-      alert(accounts);
+      if(accounts == null){
+        alert(accounts);
+      }
       this.account = accounts[0];
 
       //this.refreshBalance();
@@ -31,7 +33,7 @@ const App = {
   },
 
   refreshBalance: async function () {
-    const { fetchCreditScoreViaProvable } = this.meta.methods;
+    const { fetchCreditScoreViaProvable } = this.CS.methods;
     const ETH_AMOUNT = 1e16;
     const GAS_LIMIT = 3e6
     const balanceDes = await fetchCreditScoreViaProvable()
@@ -40,7 +42,7 @@ const App = {
         gas: GAS_LIMIT,
         value: ETH_AMOUNT
       })//getBalance(this.account).call();
-    const { creditScoreValue } = this.meta.methods;
+    const { creditScoreValue } = this.CS.methods;
     const balance = await creditScoreValue().call();
 
     const balanceElement = document.getElementsByClassName("balance")[0];
@@ -55,7 +57,7 @@ const App = {
     const json = JSON.stringify(props);
     console.log(json);
     
-    const { fetchCreditScoreViaProvable } = this.meta.methods;
+    const { fetchCreditScoreViaProvable } = this.CS.methods;
     const ETH_AMOUNT = 1e16;
     const GAS_LIMIT = 3e6
     const balanceDes = await fetchCreditScoreViaProvable()
@@ -64,9 +66,8 @@ const App = {
         gas: GAS_LIMIT,
         value: ETH_AMOUNT
       })//getBalance(this.account).call();
-    const { creditScoreValue } = this.meta.methods;
+    const { creditScoreValue } = this.CS.methods;
     const balance = await creditScoreValue().call();
-
     const balanceElement = document.getElementsByClassName("balance")[0];
     balanceElement.innerHTML = balance;
     //doughnut
@@ -85,19 +86,6 @@ const App = {
         responsive: true
       }
     });
-  },
-
-  sendCoin: async function () {
-    const amount = parseInt(document.getElementById("amount").value);
-    const receiver = document.getElementById("receiver").value;
-
-    this.setStatus("Initiating transaction... (please wait)");
-
-    const { sendCoin } = this.meta.methods;
-    await sendCoin(receiver, amount).send({ from: this.account });
-
-    this.setStatus("Transaction complete!");
-    this.refreshBalance();
   },
 
   setStatus: function (message) {
