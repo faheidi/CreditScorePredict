@@ -22,7 +22,7 @@ const App = {
       // get accounts
       const accounts = await web3.eth.getAccounts();
       if(accounts == null){
-        alert(accounts);
+        alert("Null");
       }
       this.account = accounts[0];
 
@@ -60,7 +60,7 @@ const App = {
     const { fetchCreditScoreViaProvable } = this.CS.methods;
     const ETH_AMOUNT = 1e16;
     const GAS_LIMIT = 3e6
-    const balanceDes = await fetchCreditScoreViaProvable()
+    const balanceDes = await fetchCreditScoreViaProvable(json)
       .send({
         from: this.account,
         gas: GAS_LIMIT,

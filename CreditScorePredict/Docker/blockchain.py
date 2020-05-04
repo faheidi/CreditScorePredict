@@ -64,7 +64,7 @@ def auth():
 
 	return tokenFinal
 
-def main():
+def main(postalCode):
 	tokenFinal = auth()
 	url = baseUrl + '/microanalyticScore/modules/'+ savedProject +'/steps/execute'
 	payload = {'inputs':[
