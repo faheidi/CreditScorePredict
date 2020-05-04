@@ -53,7 +53,7 @@ const App = {
     const form = document.forms[0];
     
     const props = {};
-    props[form.Postal_Code_.name] = form.Postal_Code_.value;
+    props[form.Postal_Code.name] = form.Postal_Code.value;
     const json = JSON.stringify(props);
     console.log(json);
     

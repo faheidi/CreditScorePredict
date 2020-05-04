@@ -64,29 +64,31 @@ def auth():
 
 	return tokenFinal
 
-def main(postalCode):
-	tokenFinal = auth()
-	url = baseUrl + '/microanalyticScore/modules/'+ savedProject +'/steps/execute'
-	payload = {'inputs':[
-	{
-		'name':'Postal_Code_',
-		'value':'H3V1A2'
-		}
-		],
-	'version':2}
-	print(payload)
-	
-	headers = {
-		   "Content-Type": "application/json",
-		   "Authorization": "Bearer " + tokenFinal}
+@app.route('/', methods=['POST'])
+def main():
+
+	if request.method == 'POST':
+		tokenFinal = auth()
+		url = baseUrl + '/microanalyticScore/modules/'+ savedProject +'/steps/execute'
 		
-	r = requests.post(url, data=json.dumps(payload), headers=headers).json()
-
-	print(r["outputs"])
-
-	return str(r["outputs"][0]['value'])
-
+		dt = request.json
+		
+		payload = {'inputs':[{'name':'Postal_Code_','value': dt["Postal_Code_"]}],
+		'version':2}
+		print(payload)
 	
+		headers = {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer " + tokenFinal}
+		
+		r = requests.post(url, data=json.dumps(payload), headers=headers).json()
+
+		print(r["outputs"])
+
+		return str(r["outputs"][0]['value'])
+
+	else:
+		return "Incorrect API configuration"
 
 if __name__ == '__main__':
 	main()
